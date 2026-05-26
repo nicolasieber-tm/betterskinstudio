@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Better Skin Studio Luzern — Redesign Skizze</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Reset ---------- */
+  *,*::before,*::after { box-sizing: border-box; margin:0; padding:0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #2C1F18;
+    background: #F5EFE6;
+    line-height: 1.65;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width:100%; display:block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; border:none; background:none; color: inherit; }
+
+  /* ---------- Tokens ---------- */
+  :root {
+    --bg: #F5EFE6;
+    --bg-deep: #EBE2D3;
+    --bg-darker: #1F1611;
+    --ink: #2C1F18;
+    --mocha: #5A3E2B;
+    --terra: #B5704D;
+    --champagne: #C9A77C;
+    --soft: #E8D5C4;
+    --muted: #8B7361;
+    --line: #D9CDB9;
+    --serif: 'Cormorant Garamond', serif;
+  }
+
+  h1,h2,h3,h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; color: var(--ink); }
+  h1 { font-size: clamp(2.6rem, 6vw, 5.2rem); line-height: 1.05; }
+  h2 { font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.1; }
+  h3 { font-size: 1.5rem; line-height: 1.25; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    font-size: 0.72rem;
+    color: var(--terra);
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+  section { padding: 110px 0; position: relative; }
+  @media (max-width: 720px) { section { padding: 70px 0; } }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 0;
+    transition: background .35s ease, padding .35s ease, box-shadow .35s ease, color .35s ease;
+    color: var(--bg);
+  }
+  header.nav.scrolled {
+    background: rgba(245, 239, 230, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 12px 0;
+    box-shadow: 0 1px 0 rgba(44,31,24,0.06);
+    color: var(--ink);
+  }
+  .nav-row { display:flex; align-items:center; justify-content:space-between; gap: 24px; }
+  .brand { display:flex; align-items:center; gap: 14px; color: inherit; }
+  .brand-mark {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--champagne));
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--serif); color:#fff; font-size: 1.35rem; font-style: italic;
+    box-shadow: 0 6px 18px rgba(181,112,77,0.25);
+  }
+  .brand-name { font-family: var(--serif); font-size: 1.25rem; letter-spacing: 0.03em; }
+  .brand-name span { display:block; font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.32em; text-transform: uppercase; opacity: 0.75; margin-top: 2px; }
+
+  nav.menu { display:flex; gap: 32px; }
+  nav.menu a {
+    font-size: 0.86rem;
+    color: inherit;
+    letter-spacing: 0.04em;
+    position: relative;
+    padding: 4px 0;
+  }
+  nav.menu a::after {
+    content:''; position:absolute; left:0; right:0; bottom:-2px;
+    height:1px; background: var(--terra);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease;
+  }
+  nav.menu a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    display: inline-flex; align-items:center; gap: 10px;
+    background: var(--bg); color: var(--ink);
+    padding: 12px 22px; border-radius: 999px;
+    font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: background .3s ease, transform .3s ease, color .3s ease;
+  }
+  header.nav.scrolled .nav-cta { background: var(--ink); color: var(--bg); }
+  .nav-cta:hover { background: var(--terra) !important; color: var(--bg) !important; transform: translateY(-1px); }
+
+  .menu-toggle { display: none; }
+
+  @media (max-width: 980px) {
+    nav.menu { display: none; }
+    .menu-toggle {
+      display: flex; width: 40px; height: 40px;
+      flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+    }
+    .menu-toggle span { width: 22px; height: 1.5px; background: currentColor; transition: transform .3s; }
+    nav.menu.open {
+      display:flex; flex-direction: column; gap: 18px;
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--bg);
+      padding: 24px 28px 32px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+    }
+  }
+
+  /* ---------- Hero (with background video) ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 92vh;
+    padding-top: 140px; padding-bottom: 70px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: var(--bg);
+    isolation: isolate;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    z-index: -2;
+    background: var(--bg-darker);
+  }
+  .hero-bg video, .hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(31,22,17,0.78) 0%, rgba(31,22,17,0.55) 45%, rgba(31,22,17,0.25) 100%),
+      linear-gradient(180deg, rgba(31,22,17,0.25) 0%, rgba(31,22,17,0.45) 100%);
+  }
+  .hero-content {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  .hero-copy { max-width: 640px; }
+  .hero-copy .eyebrow { color: var(--champagne); }
+  .hero-copy h1 { margin-bottom: 1.5rem; color: var(--bg); }
+  .hero-copy h1 em { font-style: italic; color: var(--champagne); font-weight: 400; }
+  .hero-copy .lead {
+    font-size: 1.12rem;
+    color: rgba(245,239,230,0.88);
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+  .hero-actions { display:flex; flex-wrap:wrap; gap: 14px; align-items: center; }
+  .hero .btn-primary { background: var(--bg); color: var(--ink); }
+  .hero .btn-primary:hover { background: var(--terra); color: var(--bg); }
+  .hero .btn-ghost { border-color: rgba(245,239,230,0.6); color: var(--bg); }
+  .hero .btn-ghost:hover { background: var(--bg); color: var(--ink); }
+  @media (max-width: 720px) {
+    .hero { min-height: 84vh; padding-top: 110px; padding-bottom: 50px; }
+  }
+  .btn-primary {
+    display:inline-flex; align-items:center; gap: 12px;
+    background: var(--ink); color: var(--bg);
+    padding: 18px 32px; border-radius: 999px;
+    font-size: 0.86rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: all .3s ease;
+  }
+  .btn-primary:hover { background: var(--terra); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(181,112,77,0.28); }
+  .btn-ghost {
+    display:inline-flex; align-items:center; gap: 10px;
+    padding: 18px 32px; border-radius: 999px;
+    font-size: 0.86rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid var(--ink); color: var(--ink);
+    transition: all .3s ease;
+  }
+  .btn-ghost:hover { background: var(--ink); color: var(--bg); }
+
+  .hero-tag {
+    display: inline-flex; align-items:center; gap: 12px;
+    background: rgba(245,239,230,0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(245,239,230,0.2);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: var(--bg);
+    margin-top: 36px;
+    letter-spacing: 0.04em;
+  }
+  .hero-tag .dot {
+    width: 8px; height: 8px; background: var(--champagne); border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(201,167,124, 0.5);
+    animation: pulse 2s infinite;
+  }
+
+  /* ---------- Hero-Meta (below hero) ---------- */
+  .hero-meta-section {
+    background: var(--bg);
+    padding: 0;
+  }
+  .hero-meta {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-meta > div {
+    padding: 32px 24px;
+    border-right: 1px solid var(--line);
+  }
+  .hero-meta > div:last-child { border-right: none; }
+  .hero-meta .num { font-family: var(--serif); font-size: 2.4rem; color: var(--terra); line-height: 1; margin-bottom: 8px; }
+  .hero-meta .lbl { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  @media (max-width: 720px) {
+    .hero-meta { grid-template-columns: 1fr; }
+    .hero-meta > div { border-right: none; border-bottom: 1px solid var(--line); }
+    .hero-meta > div:last-child { border-bottom: none; }
+  }
+
+  /* ---------- Philosophie ---------- */
+  .philosophy { background: var(--bg-deep); }
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  @media (max-width: 980px) { .philosophy-grid { grid-template-columns: 1fr; gap: 50px; } }
+  .philosophy-visual { position: relative; }
+  .philosophy-visual img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 4px; }
+  .philosophy-visual::after {
+    content:''; position: absolute;
+    inset: -20px -20px 30px 30px;
+    border: 1px solid var(--terra);
+    z-index: 0; border-radius: 4px;
+  }
+  .philosophy-visual img { position: relative; z-index: 1; }
+  .philosophy-copy p {
+    color: var(--mocha);
+    margin-bottom: 1.4rem;
+    font-size: 1.05rem;
+  }
+  .philosophy-copy p:last-child { margin-bottom: 0; }
+  .pillars {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 2.5rem;
+  }
+  .pillar {
+    padding: 22px;
+    background: rgba(245,239,230,0.7);
+    border-radius: 4px;
+    border-left: 2px solid var(--terra);
+  }
+  .pillar h4 { font-size: 1.1rem; margin-bottom: 6px; }
+  .pillar p { font-size: 0.9rem; color: var(--mocha); margin: 0; }
+  @media (max-width: 540px) { .pillars { grid-template-columns: 1fr; } }
+
+  /* ---------- Beratungs-Sektion ---------- */
+  .beratung { background: var(--bg); }
+  .beratung-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  @media (max-width: 880px) { .beratung-cards { grid-template-columns: 1fr; } }
+  .ber-card {
+    background: var(--bg-deep);
+    padding: 36px 30px;
+    border-radius: 4px;
+    border-top: 3px solid var(--terra);
+    display: flex; flex-direction: column;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .ber-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(44,31,24,0.08); }
+  .ber-card .duration {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 14px;
+  }
+  .ber-card h4 { font-size: 1.6rem; margin-bottom: 14px; }
+  .ber-card p { color: var(--mocha); font-size: 0.95rem; flex: 1; }
+  .ber-card .price {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .ber-card .price-val { font-family: var(--serif); font-size: 1.4rem; color: var(--ink); }
+  .ber-card .price-val small { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-left: 6px; font-family: 'Inter', sans-serif; }
+  .ber-card .book-link {
+    font-size: 0.74rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    border-bottom: 1px solid var(--terra);
+    padding-bottom: 2px;
+  }
+
+  /* ---------- Behandlungen Kategorien ---------- */
+  .section-head { text-align: center; max-width: 720px; margin: 0 auto 70px; }
+  .section-head .lead { color: var(--mocha); margin-top: 1.2rem; font-size: 1.05rem; }
+
+  .categories {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-bottom: 100px;
+  }
+  @media (max-width: 980px) { .categories { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .categories { grid-template-columns: 1fr; } }
+  .cat {
+    background: var(--bg-deep);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform .4s ease;
+    cursor: pointer;
+  }
+  .cat:hover { transform: translateY(-4px); }
+  .cat-img { aspect-ratio: 4/5; overflow: hidden; }
+  .cat-img img { width:100%; height:100%; object-fit: cover; transition: transform .8s ease; }
+  .cat:hover .cat-img img { transform: scale(1.06); }
+  .cat-body { padding: 24px 22px 28px; }
+  .cat-body h4 { font-size: 1.4rem; margin-bottom: 8px; }
+  .cat-body p { font-size: 0.92rem; color: var(--mocha); margin-bottom: 16px; line-height: 1.55; }
+  .cat-body a { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terra); border-bottom: 1px solid var(--terra); padding-bottom: 2px; }
+
+  /* ---------- Treatments grid ---------- */
+  .treatments-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 980px) { .treatments-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .treatments-grid { grid-template-columns: 1fr; } }
+  .treatment {
+    background: var(--bg);
+    padding: 36px 30px;
+    cursor: pointer;
+    transition: background .3s ease;
+    display:flex; flex-direction: column;
+    min-height: 260px;
+  }
+  .treatment:hover { background: var(--bg-deep); }
+  .treatment .badge {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 14px;
+  }
+  .treatment h4 { font-size: 1.5rem; margin-bottom: 12px; }
+  .treatment p { font-size: 0.92rem; color: var(--mocha); flex: 1; line-height: 1.55; }
+  .treatment .row {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .treatment .price {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+  .treatment .price small { font-size: 0.66rem; font-family: 'Inter', sans-serif; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-right: 4px; }
+  .treatment .more {
+    display: inline-flex; align-items:center; gap: 8px;
+    font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .treatment .more svg { transition: transform .3s ease; }
+  .treatment:hover .more svg { transform: translateX(4px); }
+
+  /* Treatments alt (Kombi) - darker background */
+  .kombi-section { background: var(--bg-darker); color: var(--bg); }
+  .kombi-section .section-head h2 { color: var(--bg); }
+  .kombi-section .section-head .eyebrow { color: var(--champagne); }
+  .kombi-section .section-head .lead { color: rgba(245,239,230,0.7); }
+  .kombi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(201,167,124,0.18);
+    border: 1px solid rgba(201,167,124,0.18);
+  }
+  @media (max-width: 880px) { .kombi-grid { grid-template-columns: 1fr; } }
+  .kombi-card {
+    background: var(--bg-darker);
+    padding: 40px 32px;
+    cursor: pointer;
+    transition: background .3s ease;
+    display:flex; flex-direction: column;
+    min-height: 280px;
+  }
+  .kombi-card:hover { background: #2A1D15; }
+  .kombi-card .pair {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--champagne);
+    margin-bottom: 18px;
+  }
+  .kombi-card .pair .x { color: var(--terra); }
+  .kombi-card h4 { font-family: var(--serif); font-size: 1.7rem; color: var(--bg); margin-bottom: 14px; }
+  .kombi-card p { color: rgba(245,239,230,0.75); font-size: 0.94rem; flex: 1; line-height: 1.6; }
+  .kombi-card .row {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px dashed rgba(201,167,124,0.25);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .kombi-card .price { font-family: var(--serif); font-size: 1.3rem; color: var(--champagne); }
+  .kombi-card .price small { font-size: 0.66rem; font-family: 'Inter', sans-serif; color: rgba(201,167,124,0.7); letter-spacing: 0.18em; text-transform: uppercase; margin-right: 4px; }
+  .kombi-card .more { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bg); display: inline-flex; align-items: center; gap: 8px; }
+
+  /* ---------- Testimonials ---------- */
+  .testimonials { background: var(--bg-deep); }
+
+  .placeholder-note {
+    display: inline-block;
+    background: rgba(181,112,77,0.1);
+    border: 1px dashed var(--terra);
+    color: var(--terra);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .quotes {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+  }
+  @media (max-width: 880px) { .quotes { grid-template-columns: 1fr; } }
+  .quote {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 36px 30px;
+    border-radius: 4px;
+  }
+  .quote .mark { font-family: var(--serif); font-size: 3.5rem; color: var(--terra); line-height: 0.5; height: 24px; margin-bottom: 16px; opacity: 0.4; }
+  .quote p { font-family: var(--serif); font-style: italic; font-size: 1.15rem; line-height: 1.5; margin-bottom: 24px; color: var(--ink); }
+  .quote .who { font-size: 0.8rem; letter-spacing: 0.14em; color: var(--terra); text-transform: uppercase; }
+  .quote.ph p { color: var(--muted); }
+
+  /* ---------- Kontakt ---------- */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; align-items: stretch;
+  }
+  @media (max-width: 880px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-info { padding: 20px 0; }
+  .info-block { padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .info-block:last-child { border-bottom: none; }
+  .info-block h4 { font-size: 1.1rem; margin-bottom: 6px; }
+  .info-block p { color: var(--mocha); font-size: 0.95rem; line-height: 1.55; }
+  .info-block a { color: var(--terra); border-bottom: 1px solid var(--terra); }
+  .map-wrap {
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 420px;
+    background: var(--bg-deep);
+    position: relative;
+  }
+  .map-wrap iframe { width:100%; height: 100%; min-height: 420px; border: 0; filter: sepia(0.15) saturate(0.9); }
+
+  /* ---------- Booking CTA ---------- */
+  .booking-cta-section {
+    background: linear-gradient(135deg, var(--terra) 0%, #8E5238 100%);
+    color: var(--bg);
+    text-align: center;
+  }
+  .booking-cta-section h2 { color: var(--bg); margin-bottom: 1.2rem; }
+  .booking-cta-section p { color: rgba(245,239,230,0.85); max-width: 560px; margin: 0 auto 2.5rem; font-size: 1.05rem; }
+  .booking-cta-section .btn-primary { background: var(--bg); color: var(--ink); }
+  .booking-cta-section .btn-primary:hover { background: var(--ink); color: var(--bg); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+
+  /* ---------- Modals & Wizard ---------- */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(31, 22, 17, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .modal-backdrop.active { display: flex; opacity: 1; }
+  .modal {
+    background: var(--bg);
+    width: 100%; max-width: 720px;
+    max-height: 90vh; overflow-y: auto;
+    border-radius: 4px;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform .35s ease;
+  }
+  .modal-backdrop.active .modal { transform: translateY(0); }
+  .modal-close {
+    position: absolute; top: 18px; right: 18px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+    display:flex; align-items:center; justify-content:center;
+    z-index: 2;
+  }
+  .modal-close:hover { background: var(--soft); }
+  .modal-content { padding: 50px 50px 44px; }
+  @media (max-width: 580px) { .modal-content { padding: 40px 24px 32px; } }
+
+  #treatmentModal .modal-content h3 { font-size: 2rem; margin-bottom: 10px; }
+  #treatmentModal .modal-content .badge { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--terra); margin-bottom: 14px; display: block; }
+  #treatmentModal .modal-content p { color: var(--mocha); margin-bottom: 1.4rem; font-size: 1rem; line-height: 1.7; }
+  #treatmentModal .modal-price {
+    display: inline-block;
+    background: var(--bg-deep);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    margin-bottom: 1.4rem;
+  }
+  #treatmentModal .modal-price small { font-size: 0.7rem; font-family: 'Inter', sans-serif; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-right: 6px; }
+  #treatmentModal .modal-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+  /* Wizard */
+  .wizard-steps {
+    display: flex; gap: 12px;
+    margin-bottom: 36px;
+  }
+  .step-pill {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 4px;
+    background: var(--bg-deep);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 10px;
+    transition: all .3s ease;
+  }
+  .step-pill .n {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--line);
+    color: var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 0.75rem;
+    font-family: var(--serif);
+  }
+  .step-pill.active { background: var(--ink); color: var(--bg); }
+  .step-pill.active .n { background: var(--terra); color: var(--bg); }
+  .step-pill.done .n { background: var(--terra); color: var(--bg); }
+  @media (max-width: 580px) {
+    .step-pill .label { display: none; }
+    .step-pill { justify-content: center; }
+  }
+
+  .wizard-step { display: none; }
+  .wizard-step.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .wizard h3 { font-size: 1.7rem; margin-bottom: 8px; }
+  .wizard .step-sub { color: var(--muted); margin-bottom: 28px; font-size: 0.95rem; }
+
+  .opt-group-label {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--terra); margin: 18px 0 8px;
+    font-weight: 500;
+  }
+  .opt-group-label:first-child { margin-top: 0; }
+  .treatment-options { max-height: 360px; overflow-y: auto; padding-right: 6px; }
+  .treatment-options::-webkit-scrollbar { width: 6px; }
+  .treatment-options::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .opt {
+    display:flex; align-items:center; gap: 16px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .25s ease;
+    margin-bottom: 8px;
+  }
+  .opt:hover { border-color: var(--terra); background: rgba(181,112,77,0.04); }
+  .opt.selected { border-color: var(--terra); background: rgba(181,112,77,0.08); }
+  .opt-radio {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 1.5px solid var(--line);
+    flex-shrink: 0;
+    position: relative;
+    transition: all .25s ease;
+  }
+  .opt.selected .opt-radio { border-color: var(--terra); }
+  .opt.selected .opt-radio::after {
+    content: ''; position: absolute; inset: 3px;
+    background: var(--terra); border-radius: 50%;
+  }
+  .opt-body { flex: 1; }
+  .opt-name { font-family: var(--serif); font-size: 1.1rem; line-height: 1.2; }
+  .opt-cat { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+  .opt-price { font-family: var(--serif); font-size: 0.95rem; color: var(--mocha); white-space: nowrap; }
+
+  .date-picker {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+    margin-bottom: 24px;
+  }
+  .day-cell {
+    text-align: center;
+    padding: 10px 4px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .2s ease;
+    font-size: 0.85rem;
+  }
+  .day-cell:hover:not(.disabled) { border-color: var(--terra); }
+  .day-cell.disabled { opacity: 0.3; cursor: not-allowed; }
+  .day-cell.selected { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .day-cell .dow { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display:block; margin-bottom: 2px; }
+  .day-cell.selected .dow { color: rgba(245,239,230,0.7); }
+  .day-cell .dn { font-family: var(--serif); font-size: 1.15rem; }
+  .month-label { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 16px; color: var(--mocha); }
+
+  .time-slots {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    margin-top: 20px;
+  }
+  @media (max-width: 480px) { .time-slots { grid-template-columns: repeat(3, 1fr); } }
+  .slot {
+    padding: 10px 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .slot:hover { border-color: var(--terra); }
+  .slot.selected { background: var(--terra); color: var(--bg); border-color: var(--terra); }
+  .slot.disabled { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display:block; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: border-color .2s ease;
+  }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--terra); }
+  .field textarea { min-height: 90px; resize: vertical; }
+
+  .wizard-nav {
+    display: flex; justify-content: space-between; gap: 12px;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .btn-back {
+    padding: 14px 24px; border-radius: 999px;
+    font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .btn-back:hover { color: var(--ink); }
+  .btn-next {
+    padding: 14px 28px; border-radius: 999px;
+    font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+    background: var(--ink); color: var(--bg);
+    transition: all .3s ease;
+  }
+  .btn-next:hover:not(:disabled) { background: var(--terra); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .summary-card {
+    background: var(--bg-deep);
+    padding: 24px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.92rem; gap: 16px; }
+  .summary-row + .summary-row { border-top: 1px dashed var(--line); }
+  .summary-row .lbl { color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.74rem; align-self: center; }
+  .summary-row .val { font-family: var(--serif); font-size: 1.05rem; text-align: right; }
+
+  .confirm-screen { text-align: center; padding: 20px 0; }
+  .confirm-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--champagne));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    color: var(--bg);
+  }
+  .confirm-screen h3 { font-size: 2rem; margin-bottom: 12px; }
+  .confirm-screen p { color: var(--mocha); margin-bottom: 8px; }
+  .confirm-note { font-size: 0.78rem; color: var(--muted); margin-top: 28px; font-style: italic; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--bg-darker);
+    color: rgba(245,239,230,0.7);
+    padding: 70px 0 30px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
+    margin-bottom: 50px;
+  }
+  @media (max-width: 880px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+  @media (max-width: 540px) { .footer-grid { grid-template-columns: 1fr; } }
+  footer h5 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--champagne);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  footer .brand-block .brand-name { color: var(--bg); }
+  footer .brand-block .brand-name span { color: var(--champagne); }
+  footer p, footer a { font-size: 0.88rem; line-height: 1.7; }
+  footer a:hover { color: var(--champagne); }
+  footer ul { list-style: none; }
+  footer ul li { margin-bottom: 8px; }
+  .footer-bottom {
+    border-top: 1px solid rgba(201,167,124,0.15);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 0.78rem;
+    color: rgba(245,239,230,0.5);
+  }
+  .footer-bottom .legal { display: flex; gap: 20px; flex-wrap: wrap; }
+
+  /* ---------- Sketch banner ---------- */
+  .sketch-banner {
+    position: fixed; bottom: 20px; right: 20px; z-index: 99;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sketch-banner .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--terra);
+    box-shadow: 0 0 0 0 rgba(181,112,77, 0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(181,112,77, 0.55); }
+    70% { box-shadow: 0 0 0 10px rgba(181,112,77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(181,112,77, 0); }
+  }
+
+  /* ========================================================== */
+  /* ============ MODERN PASS: Motion + Editorial ============= */
+  /* ========================================================== */
+
+  /* ---------- Bigger, more expressive hero typography ---------- */
+  .hero-copy h1 {
+    font-size: clamp(3.2rem, 8.5vw, 7.2rem);
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    font-weight: 300;
+  }
+  .hero-copy h1 em {
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  /* Editorial: bigger section headlines */
+  .section-head h2,
+  section h2 {
+    font-size: clamp(2.4rem, 5.2vw, 4.4rem);
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- Scroll-reveal system (smooth) ---------- */
+  :root {
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --reveal-dur: 1.15s;
+  }
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition: opacity var(--reveal-dur) var(--ease-out-soft),
+                transform var(--reveal-dur) var(--ease-out-soft);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+  }
+  .reveal.in { opacity: 1; transform: translate3d(0, 0, 0); }
+  .reveal[data-delay="1"] { transition-delay: .11s; }
+  .reveal[data-delay="2"] { transition-delay: .22s; }
+  .reveal[data-delay="3"] { transition-delay: .33s; }
+  .reveal[data-delay="4"] { transition-delay: .44s; }
+  .reveal[data-delay="5"] { transition-delay: .55s; }
+  .reveal[data-delay="6"] { transition-delay: .66s; }
+
+  /* Image reveal: opacity + subtle zoom-out (reliable across browsers) */
+  .reveal-img {
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1.3s var(--ease-out-soft),
+                transform 1.6s var(--ease-out-soft);
+    will-change: opacity, transform;
+  }
+  .reveal-img.in { opacity: 1; transform: scale(1); }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-img { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- Editorial section numerals ---------- */
+  section { position: relative; overflow: visible; }
+  section > .wrap { position: relative; z-index: 2; }
+  .section-num {
+    position: absolute;
+    top: 70px;
+    right: clamp(20px, 4vw, 80px);
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(6rem, 16vw, 18rem);
+    line-height: 0.78;
+    color: var(--terra);
+    opacity: 0.07;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    letter-spacing: -0.04em;
+  }
+  .kombi-section .section-num,
+  .testimonials .section-num,
+  .booking-cta-section .section-num { color: var(--champagne); opacity: 0.12; }
+  .hero .section-num { color: var(--champagne); opacity: 0.18; top: 140px; }
+  @media (max-width: 720px) {
+    .section-num { font-size: 5.5rem; top: 40px; right: 12px; }
+  }
+
+  /* ---------- Sticky vertical section labels ---------- */
+  .section-anchor {
+    position: absolute;
+    top: 130px;
+    left: 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    z-index: 3;
+    display: flex; align-items: center; gap: 14px;
+    font-weight: 500;
+  }
+  .section-anchor::before {
+    content:''; width: 1px; height: 36px; background: var(--terra);
+    display: inline-block;
+  }
+  .kombi-section .section-anchor,
+  .testimonials .section-anchor { color: var(--champagne); }
+  @media (max-width: 1180px) { .section-anchor { display: none; } }
+
+  /* ---------- 3D card tilt ---------- */
+  .cat, .ber-card, .treatment, .kombi-card {
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.2,.8,.2,1),
+                box-shadow .55s cubic-bezier(.2,.8,.2,1),
+                background .3s ease;
+    will-change: transform;
+  }
+  .cat:hover, .ber-card:hover {
+    box-shadow: 0 32px 60px -24px rgba(44,31,24,0.28);
+  }
+  .kombi-card:hover {
+    box-shadow: 0 32px 60px -24px rgba(0,0,0,0.5);
+  }
+  /* JS sets inline transform on mousemove; this is the rest-state */
+  .tilt-inner { transform-style: preserve-3d; }
+
+  /* Lift cards slightly via shadow on hover even without mouse-tracking */
+  @media (hover: none) {
+    .cat, .ber-card, .treatment, .kombi-card { transform: none !important; }
+  }
+
+  /* ---------- Pull-quote (editorial moment) ---------- */
+  .pull-quote {
+    position: relative;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.18;
+    color: var(--ink);
+    margin: 70px 0 30px;
+    padding: 36px 0 36px 56px;
+    max-width: 880px;
+    border-left: 1px solid var(--terra);
+  }
+  .pull-quote::before {
+    content:'"';
+    position:absolute;
+    left: 14px; top: -10px;
+    font-size: 5.5rem;
+    line-height: 1;
+    color: var(--terra);
+    opacity: 0.5;
+    font-style: normal;
+  }
+  .pull-quote em { color: var(--terra); font-style: italic; font-weight: 400; }
+
+  /* ---------- Parallax-light on philosophy image ---------- */
+  .philosophy-visual { will-change: transform; }
+
+  /* ---------- Smoother category tile interactions ---------- */
+  .cat-body h4 {
+    transition: color .3s ease;
+  }
+  .cat:hover .cat-body h4 { color: var(--terra); }
+
+  /* ---------- Treatment grid: subtle index numerals ---------- */
+  .treatment {
+    position: relative;
+  }
+  .treatment::before {
+    content: attr(data-idx);
+    position: absolute;
+    top: 18px; right: 22px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .treatment:hover::before { opacity: 0.8; }
+
+  /* ---------- Beratungs-card: numeric badge ---------- */
+  .ber-card { position: relative; }
+  .ber-card .step-idx {
+    position: absolute;
+    top: -16px; left: 30px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--terra);
+    color: var(--bg);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.15rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(181,112,77,0.35);
+  }
+
+  /* ---------- Hero CTA shine animation ---------- */
+  .hero .btn-primary {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero .btn-primary::after {
+    content:'';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(245,239,230,0.4), transparent);
+    transition: left .6s ease;
+  }
+  .hero .btn-primary:hover::after { left: 150%; }
+
+  /* ---------- Hero meta animated underlines on scroll-into-view ---------- */
+  .hero-meta > div {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-meta > div::after {
+    content:''; position: absolute; left: 0; bottom: 0;
+    height: 2px; width: 0;
+    background: var(--terra);
+    transition: width 1.4s cubic-bezier(.16,.84,.3,1) .3s;
+  }
+  .hero-meta > div.in::after { width: 100%; }
+
+  /* ---------- Smooth section spacing ---------- */
+  section + section { margin-top: 0; }
+
+  /* ---------- Treatment-grid: rounded outer edges (modern softness) ---------- */
+  .treatments-grid { border-radius: 6px; overflow: hidden; }
+
+  /* ---------- CTA tile inside treatments grid ---------- */
+  .cta-tile {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 40px 36px;
+    grid-column: span 2;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    min-height: 260px;
+    transition: background .35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-tile::before {
+    content: '';
+    position: absolute;
+    inset: -50% -10% auto auto;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(201,167,124,0.18), transparent 65%);
+    pointer-events: none;
+  }
+  .cta-tile:hover { background: #3D2B20; }
+  .cta-tile .eyebrow {
+    color: var(--champagne);
+    margin-bottom: 14px;
+  }
+  .cta-tile h4 {
+    color: var(--bg);
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    max-width: 520px;
+  }
+  .cta-tile p {
+    color: rgba(245,239,230,0.78);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 26px;
+    max-width: 480px;
+  }
+  .cta-tile .cta-btn {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--bg); color: var(--ink);
+    padding: 14px 26px; border-radius: 999px;
+    font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background .3s ease, color .3s ease, transform .3s ease;
+    position: relative; z-index: 1;
+  }
+  .cta-tile .cta-btn:hover { background: var(--terra); color: var(--bg); transform: translateY(-1px); }
+  .cta-tile .cta-btn svg { transition: transform .3s ease; }
+  .cta-tile:hover .cta-btn svg { transform: translateX(4px); }
+
+  @media (max-width: 980px) { .cta-tile { grid-column: span 2; } }
+  @media (max-width: 540px) { .cta-tile { grid-column: span 1; } }
+
+  /* ---------- Hero tag refined ---------- */
+  .hero-tag { transition: background .3s ease, transform .3s ease; }
+  .hero-tag:hover { background: rgba(245,239,230,0.2); }
+
+  /* ========================================================== */
+  /* =============== Instagram Section ======================= */
+  /* ========================================================== */
+  .instagram-section { background: var(--bg); }
+  .ig-handle {
+    font-style: italic;
+    background: linear-gradient(135deg, #833ab4 0%, #e1306c 50%, #fcaf45 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    font-weight: 400;
+  }
+  .insta-note {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-top: 22px;
+    padding: 8px 16px;
+    border: 1px dashed var(--terra);
+    border-radius: 4px;
+    background: rgba(181,112,77,0.06);
+  }
+  .insta-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 980px) { .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; } }
+
+  .insta-tile {
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .35s ease;
+    cursor: pointer;
+  }
+  .insta-tile:nth-child(6n+1) { background: linear-gradient(135deg, var(--soft) 0%, var(--bg-deep) 100%); }
+  .insta-tile:nth-child(6n+2) { background: linear-gradient(135deg, var(--bg-deep) 0%, var(--soft) 100%); }
+  .insta-tile:nth-child(6n+3) { background: linear-gradient(135deg, var(--champagne) 0%, var(--soft) 100%); opacity: 0.85; }
+  .insta-tile:nth-child(6n+4) { background: linear-gradient(135deg, var(--soft) 0%, var(--champagne) 100%); opacity: 0.85; }
+  .insta-tile:nth-child(6n+5) { background: linear-gradient(135deg, var(--bg-deep) 0%, var(--terra) 100%); opacity: 0.7; }
+  .insta-tile:nth-child(6n)   { background: linear-gradient(135deg, var(--terra) 0%, var(--bg-deep) 100%); opacity: 0.7; }
+
+  .insta-tile-placeholder {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.6rem;
+    color: rgba(44,31,24,0.35);
+    user-select: none;
+  }
+  .insta-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #833ab4 0%, #e1306c 50%, #fcaf45 100%);
+    opacity: 0;
+    transition: opacity .35s ease;
+    color: #fff;
+  }
+  .insta-overlay svg { width: 30px; height: 30px; }
+  .insta-tile:hover .insta-overlay { opacity: 0.95; }
+  .insta-tile:hover { transform: scale(1.02); }
+
+  .insta-cta { text-align: center; }
+  .btn-instagram {
+    display: inline-flex; align-items: center; gap: 14px;
+    background: linear-gradient(135deg, #833ab4 0%, #e1306c 50%, #fcaf45 100%);
+    color: #fff !important;
+    padding: 18px 34px;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: transform .3s ease, box-shadow .3s ease;
+    border: none;
+  }
+  .btn-instagram:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(225,48,108,0.35);
+  }
+  .btn-instagram svg { width: 18px; height: 18px; }
+
+  /* Footer Instagram link */
+  .footer-social { display: flex; gap: 12px; margin-top: 14px; }
+  .footer-social a {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(245,239,230,0.06);
+    border: 1px solid rgba(201,167,124,0.25);
+    display: flex; align-items: center; justify-content: center;
+    transition: background .3s ease, transform .3s ease, border-color .3s ease;
+  }
+  .footer-social a:hover {
+    background: linear-gradient(135deg, #833ab4, #e1306c, #fcaf45);
+    border-color: transparent;
+    transform: translateY(-2px);
+    color: #fff;
+  }
+  .footer-social svg { width: 18px; height: 18px; }
+</style>
+</head>
+<body>
+
+<!-- ====================== NAV ====================== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-row">
+    <a href="#top" class="brand">
+      <div class="brand-mark">b</div>
+      <div class="brand-name">Better Skin Studio<span>Kosmetikstudio Luzern</span></div>
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#philosophie">Studio</a>
+      <a href="#beratung">Beratung</a>
+      <a href="#einzel">Einzelbehandlungen</a>
+      <a href="#kombi">Kombi-Behandlungen</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <div style="display:flex; align-items:center; gap: 14px;">
+      <button class="nav-cta" onclick="openBooking()">Termin buchen</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menü"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ====================== HERO (background video) ====================== -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <video autoplay muted loop playsinline preload="auto"
+           poster="https://static.wixstatic.com/media/739033_158a87ee8ba443d1a40526d4e22d41acf000.jpg">
+      <source src="https://video.wixstatic.com/video/739033_158a87ee8ba443d1a40526d4e22d41ac/720p/mp4/file.mp4" type="video/mp4">
+      <source src="https://video.wixstatic.com/video/739033_158a87ee8ba443d1a40526d4e22d41ac/480p/mp4/file.mp4" type="video/mp4">
+      <img src="https://static.wixstatic.com/media/739033_158a87ee8ba443d1a40526d4e22d41acf000.jpg" alt="Better Skin Studio">
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="section-num">00</div>
+
+  <div class="hero-content">
+    <div class="hero-copy">
+      <div class="eyebrow reveal">Kosmetikstudio Luzern · medizinisch-vegan</div>
+      <h1 class="reveal" data-delay="1">Dein <em>Kokon</em><br>inmitten der City.</h1>
+      <p class="lead reveal" data-delay="2">Während Luzern draussen pulsiert, fokussieren wir uns hier ganz auf deine Haut. Hochwertige apparative und medizinisch-kosmetische Behandlungen — verbunden mit einer achtsamen, ganzheitlichen Sicht auf dein Wohlbefinden.</p>
+      <div class="hero-actions reveal" data-delay="3">
+        <button class="btn-primary" onclick="openBooking()">
+          Termin buchen
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <a href="#einzel" class="btn-ghost">Behandlungen entdecken</a>
+      </div>
+      <div class="hero-tag reveal" data-delay="4"><span class="dot"></span> Ledergasse 10 · Altstadt Luzern</div>
+    </div>
+  </div>
+</section>
+
+<section class="hero-meta-section">
+  <div class="wrap">
+    <div class="hero-meta">
+      <div class="reveal hero-meta-cell">
+        <div class="num" data-count="10" data-suffix="+">0</div>
+        <div class="lbl">Behandlungs&shy;methoden</div>
+      </div>
+      <div class="reveal hero-meta-cell" data-delay="1">
+        <div class="num" data-count="100" data-suffix="%">0</div>
+        <div class="lbl">vegan & medizinisch-kosmetisch</div>
+      </div>
+      <div class="reveal hero-meta-cell" data-delay="2">
+        <div class="num"><span data-count="6">0</span> Tage</div>
+        <div class="lbl">geöffnet · Mo–Sa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== PHILOSOPHIE ====================== -->
+<section class="philosophy" id="philosophie">
+  <div class="section-num">01</div>
+  <div class="section-anchor">Studio</div>
+  <div class="wrap">
+    <div class="philosophy-grid">
+      <div class="philosophy-visual reveal-img">
+        <img src="https://static.wixstatic.com/media/5034a7_83175c8d4f404d78b5dffd2ac86dc374~mv2.jpg/v1/fill/w_700,h_875,al_c,q_85/5034a7_83175c8d4f404d78b5dffd2ac86dc374~mv2.jpg"
+             alt="Atmosphäre im Better Skin Studio"
+             onerror="this.src='https://static.wixstatic.com/media/5034a7_83175c8d4f404d78b5dffd2ac86dc374~mv2.jpg'">
+      </div>
+      <div class="philosophy-copy">
+        <div class="eyebrow reveal">Unser Versprechen</div>
+        <h2 class="reveal" data-delay="1">Mehr als ein klassisches Kosmetik&shy;studio.</h2>
+        <p class="reveal" data-delay="2" style="margin-top: 1.5rem;">Wir verbinden hochwertige apparative und medizinisch-kosmetische Behandlungen mit einer achtsamen, ganzheitlichen Sicht auf deine Haut und dein Wohlbefinden.</p>
+        <p class="reveal" data-delay="3">Jede Behandlung wird individuell auf deine Hautbedürfnisse abgestimmt und mit kleinen Extra-Services ergänzt, die deine Auszeit bei uns besonders machen.</p>
+        <p class="reveal" data-delay="4">Du erhältst bei uns professionelle Betreuung, nachvollziehbare Empfehlungen und sichtbare Resultate — ohne Hektik, mit Zeit für deine Fragen.</p>
+
+        <div class="pillars">
+          <div class="pillar">
+            <h4>Individuelle Hautanalyse</h4>
+            <p>Wir schauen genau hin, bevor wir behandeln — und erstellen einen umsetzbaren Plan für Studio und Heimpflege.</p>
+          </div>
+          <div class="pillar">
+            <h4>Achtsame Atmosphäre</h4>
+            <p>Studio in der malerischen Altstadt Luzern. Ein ruhiger Ort, um bei dir anzukommen.</p>
+          </div>
+          <div class="pillar">
+            <h4>Apparativ & medizinisch</h4>
+            <p>HydraFacial®, JetPeel™, SkinPen® und mehr — Methoden, die sich in der Praxis bewährt haben.</p>
+          </div>
+          <div class="pillar">
+            <h4>Vegan & ganzheitlich</h4>
+            <p>Wirkstoffstarke, vegane Pflege — abgestimmt auf Hautzustand, Lebensphase und Ziel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull-quote reveal">
+      Ein ruhiger Ort, an dem du für einen Moment <em>ganz bei dir</em> ankommen darfst.
+    </div>
+  </div>
+</section>
+
+<!-- ====================== HAUTTYP & PFLEGEBERATUNG ====================== -->
+<section class="beratung" id="beratung">
+  <div class="section-num">02</div>
+  <div class="section-anchor">Beratung</div>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow reveal">Hauttyp & Pflegeberatung</div>
+      <h2 class="reveal" data-delay="1">Dein Einstieg ins Studio.</h2>
+      <p class="lead reveal" data-delay="2">Jede Haut ist einzigartig — und verändert sich im Laufe des Lebens. Damit deine Behandlung wirklich wirkt, stimmen wir sie gezielt auf deinen Hauttyp, deine aktuelle Lebensphase und deinen Alltag ab. Drei Möglichkeiten, mit uns zu starten:</p>
+    </div>
+
+    <div class="beratung-cards reveal">
+      <div class="ber-card">
+        <div class="step-idx">i</div>
+        <div class="duration">15 Minuten · online</div>
+        <h4>Onlineberatung</h4>
+        <p>Kurzes Online-Gespräch zu deinem Hautanliegen. Erste Einordnung, nächste Schritte und Empfehlung, welches Format zu dir passt — bequem von zuhause aus.</p>
+        <div class="price">
+          <div class="price-val">CHF xx.– <small>Pauschal</small></div>
+          <button class="book-link" onclick="openBooking('beratung-online')">Buchen →</button>
+        </div>
+      </div>
+      <div class="ber-card">
+        <div class="step-idx">ii</div>
+        <div class="duration">ca. 30 Minuten</div>
+        <h4>Beratung im Studio</h4>
+        <p>Detaillierte Hautanalyse, Besprechung deiner Themen und eine individuell aufgebaute Pflegeroutine für zu Hause — ideal, wenn du dich zuerst orientieren möchtest.</p>
+        <div class="price">
+          <div class="price-val">CHF xx.– <small>Pauschal</small></div>
+          <button class="book-link" onclick="openBooking('beratung-30')">Buchen →</button>
+        </div>
+      </div>
+      <div class="ber-card">
+        <div class="step-idx">iii</div>
+        <div class="duration">ca. 1.5 Stunden</div>
+        <h4>Beratung &amp; Behandlung</h4>
+        <p>Umfassende Anamnese, Hautanalyse, gemeinsame Zieldefinition, Pflegeempfehlungen und eine auf dich abgestimmte erste Behandlung. Der intensive Einstieg.</p>
+        <div class="price">
+          <div class="price-val">ab CHF xx.– <small>Pauschal</small></div>
+          <button class="book-link" onclick="openBooking('beratung-behandlung')">Buchen →</button>
+        </div>
+      </div>
+    </div>
+
+    <p style="text-align: center; max-width: 720px; margin: 60px auto 0; color: var(--mocha); font-size: 0.98rem; line-height: 1.7;">
+      In einem persönlichen Gespräch schauen wir auch auf Faktoren wie Stress, Pflegegewohnheiten und Lebensstil. Auf dieser Basis empfehlen wir dir eine Pflegeroutine, die zu deiner Haut und zu deinem Budget passt — eine Lösung, die im Alltag umsetzbar ist und über die du dich langfristig freuen kannst.
+    </p>
+  </div>
+</section>
+
+<!-- ====================== EINZELBEHANDLUNGEN ====================== -->
+<section id="einzel">
+  <div class="section-num">03</div>
+  <div class="section-anchor">Einzelbehandlungen</div>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow reveal">Einzelbehandlungen · Innovative High-Tech</div>
+      <h2 class="reveal" data-delay="1">Sichtbare Resultate, höchste Wirksamkeit.</h2>
+      <p class="lead reveal" data-delay="2">Nach einer gründlichen Hautanalyse kombinieren wir — je nach Bedarf — verschiedene Technologien in einer Behandlung. So entsteht ein individueller, mehrdimensionaler Ansatz, der Schritt für Schritt zu klarerer, ebenmässigerer und vitaler wirkender Haut führt.</p>
+    </div>
+
+    <div class="categories reveal">
+      <div class="cat" onclick="scrollToTreatments()">
+        <div class="cat-img">
+          <img src="https://static.wixstatic.com/media/5034a7_8b1b11850d0c4b1480e1e86048963972~mv2.jpeg/v1/fill/w_600,h_750,al_c,q_85/5034a7_8b1b11850d0c4b1480e1e86048963972~mv2.jpeg"
+               alt="Reinigung, Klärung & Glow"
+               onerror="this.src='https://static.wixstatic.com/media/5034a7_8b1b11850d0c4b1480e1e86048963972~mv2.jpeg'">
+        </div>
+        <div class="cat-body">
+          <div style="font-family: var(--serif); font-style: italic; color: var(--terra); font-size: 0.95rem; margin-bottom: 6px;">01 ·</div>
+          <h4>Reinigung, Klärung &amp; Glow</h4>
+          <p>Behandlungen, die das Hautbild verfeinern, porentief reinigen und frischer wirken lassen.</p>
+          <a href="#einzel-grid">Entdecken →</a>
+        </div>
+      </div>
+
+      <div class="cat" onclick="scrollToTreatments()">
+        <div class="cat-img">
+          <img src="https://static.wixstatic.com/media/739033_208200bf86fc423482e475ae8f98dc7b~mv2.png/v1/fill/w_600,h_750,al_c,q_85/739033_208200bf86fc423482e475ae8f98dc7b~mv2.png"
+               alt="Aufbau, Regeneration & Anti-Aging"
+               onerror="this.src='https://static.wixstatic.com/media/739033_208200bf86fc423482e475ae8f98dc7b~mv2.png'">
+        </div>
+        <div class="cat-body">
+          <div style="font-family: var(--serif); font-style: italic; color: var(--terra); font-size: 0.95rem; margin-bottom: 6px;">02 ·</div>
+          <h4>Aufbau, Regeneration &amp; Anti-Aging</h4>
+          <p>Behandlungen, die in die Tiefe arbeiten, Kollagen anregen und die Hautstruktur verbessern.</p>
+          <a href="#einzel-grid">Entdecken →</a>
+        </div>
+      </div>
+
+      <div class="cat" onclick="scrollToTreatments()">
+        <div class="cat-img">
+          <img src="https://static.wixstatic.com/media/739033_7f4ff8d78f4d449fa261374b2d66343f~mv2.png/v1/fill/w_600,h_750,al_c,q_85/739033_7f4ff8d78f4d449fa261374b2d66343f~mv2.png"
+               alt="Lifting & Entspannung"
+               onerror="this.src='https://static.wixstatic.com/media/739033_7f4ff8d78f4d449fa261374b2d66343f~mv2.png'">
+        </div>
+        <div class="cat-body">
+          <div style="font-family: var(--serif); font-style: italic; color: var(--terra); font-size: 0.95rem; margin-bottom: 6px;">03 ·</div>
+          <h4>Lifting &amp; Entspannung</h4>
+          <p>Manuelle Techniken, die straffen, lösen und das Nervensystem runterholen.</p>
+          <a href="#einzel-grid">Entdecken →</a>
+        </div>
+      </div>
+
+      <div class="cat" onclick="scrollToTreatments()">
+        <div class="cat-img">
+          <img src="https://static.wixstatic.com/media/739033_b5e2a8be2cbb4752900c0f6fd965c15d~mv2.png/v1/fill/w_600,h_750,al_c,q_85/739033_b5e2a8be2cbb4752900c0f6fd965c15d~mv2.png"
+               alt="Klassische Behandlungen"
+               onerror="this.src='https://static.wixstatic.com/media/739033_b5e2a8be2cbb4752900c0f6fd965c15d~mv2.png'">
+        </div>
+        <div class="cat-body">
+          <div style="font-family: var(--serif); font-style: italic; color: var(--terra); font-size: 0.95rem; margin-bottom: 6px;">04 ·</div>
+          <h4>Klassische Behandlungen</h4>
+          <p>Zeit für bewährte Kosmetik mit persönlicher Betreuung — individuell abgestimmt.</p>
+          <a href="#einzel-grid">Entdecken →</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="einzel-grid">
+      <div class="section-head" style="margin-bottom: 50px;">
+        <div class="eyebrow">Alle Einzelbehandlungen</div>
+        <h2 style="font-size: clamp(1.6rem, 3vw, 2.4rem);">Treatments auf einen Blick.</h2>
+      </div>
+
+      <div class="treatments-grid reveal" id="treatmentsGrid">
+        <!-- treatments injected via JS -->
+      </div>
+
+      <p style="text-align: center; margin-top: 30px; font-size: 0.85rem; color: var(--muted); font-style: italic;">
+        Alle Behandlungen sind in den Varianten <strong style="color: var(--ink); font-style: normal; font-weight: 500;">Basic</strong>, <strong style="color: var(--ink); font-style: normal; font-weight: 500;">Premium</strong> und <strong style="color: var(--ink); font-style: normal; font-weight: 500;">Deluxe</strong> buchbar. Inhalte und Preise auf der Buchungsseite.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== KOMBI-BEHANDLUNGEN ====================== -->
+<section class="kombi-section" id="kombi">
+  <div class="section-num">04</div>
+  <div class="section-anchor">Kombi-Behandlungen</div>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow reveal">Kombi-Behandlungen</div>
+      <h2 class="reveal" data-delay="1">Zwei Treatments. Eine Sitzung.</h2>
+      <p class="lead reveal" data-delay="2">Mit unseren Kombi-Behandlungen verbinden wir sich ergänzende Methoden in einer Sitzung. So nutzen wir die Stärken beider Treatments — für intensivere Ergebnisse, weniger einzelne Termine und eine besonders stimmige Auszeit. Ideal, wenn du dir „mehr als nur eine einzelne Behandlung" wünschst.</p>
+    </div>
+
+    <div class="kombi-grid reveal" id="kombiGrid">
+      <!-- kombis injected via JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ====================== TESTIMONIALS ====================== -->
+<!-- ====================== INSTAGRAM ====================== -->
+<section class="instagram-section" id="instagram">
+  <div class="section-num">05</div>
+  <div class="section-anchor">Instagram</div>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow reveal">Aus dem Studio</div>
+      <h2 class="reveal" data-delay="1">Folge uns auf <span class="ig-handle">@better_skin_luzern</span></h2>
+      <p class="lead reveal" data-delay="2">Aktuelle Behandlungen, Vorher-Nachher-Eindrücke und kleine Einblicke ins Studio — direkt aus der Ledergasse.</p>
+      <div class="insta-note reveal" data-delay="3">Platzhalter · Live-Posts via Widget in der finalen Version</div>
+    </div>
+
+    <div class="insta-grid reveal">
+      <a class="insta-tile" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Letzter Beitrag auf Instagram">
+        <span class="insta-tile-placeholder">01</span>
+        <div class="insta-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+      </a>
+      <a class="insta-tile" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Letzter Beitrag auf Instagram">
+        <span class="insta-tile-placeholder">02</span>
+        <div class="insta-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+      </a>
+      <a class="insta-tile" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Letzter Beitrag auf Instagram">
+        <span class="insta-tile-placeholder">03</span>
+        <div class="insta-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+      </a>
+      <a class="insta-tile" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Letzter Beitrag auf Instagram">
+        <span class="insta-tile-placeholder">04</span>
+        <div class="insta-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+      </a>
+      <a class="insta-tile" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Letzter Beitrag auf Instagram">
+        <span class="insta-tile-placeholder">05</span>
+        <div class="insta-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+      </a>
+      <a class="insta-tile" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Letzter Beitrag auf Instagram">
+        <span class="insta-tile-placeholder">06</span>
+        <div class="insta-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+      </a>
+    </div>
+
+    <div class="insta-cta reveal">
+      <a class="btn-instagram" href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+        @better_skin_luzern folgen
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== TESTIMONIALS ====================== -->
+<section class="testimonials" id="stimmen">
+  <div class="section-num">06</div>
+  <div class="section-anchor">Stimmen</div>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="placeholder-note reveal">Platzhalter · Kundenstimmen folgen</div>
+      <div class="eyebrow reveal" data-delay="1">Stimmen</div>
+      <h2 class="reveal" data-delay="2">Was Kundinnen über uns sagen.</h2>
+      <p class="lead reveal" data-delay="3">Dieser Bereich wird mit echten Kundenstimmen aus dem Studio gefüllt. Die folgenden Karten sind Platzhalter und zeigen die spätere Darstellung.</p>
+    </div>
+
+    <div class="quotes reveal">
+      <div class="quote ph">
+        <div class="mark">"</div>
+        <p>Hier erscheint später ein echtes Zitat einer Studio-Kundin. Inhalt und Foto werden ergänzt.</p>
+        <div class="who">— Platzhalter</div>
+      </div>
+      <div class="quote ph">
+        <div class="mark">"</div>
+        <p>Hier erscheint später ein echtes Zitat einer Studio-Kundin. Inhalt und Foto werden ergänzt.</p>
+        <div class="who">— Platzhalter</div>
+      </div>
+      <div class="quote ph">
+        <div class="mark">"</div>
+        <p>Hier erscheint später ein echtes Zitat einer Studio-Kundin. Inhalt und Foto werden ergänzt.</p>
+        <div class="who">— Platzhalter</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== KONTAKT ====================== -->
+<section id="kontakt">
+  <div class="section-num">07</div>
+  <div class="section-anchor">Kontakt</div>
+  <div class="wrap">
+    <div class="section-head" style="text-align: left; margin-left: 0;">
+      <div class="eyebrow reveal">Kontakt &amp; Anfahrt</div>
+      <h2 class="reveal" data-delay="1">Besuche uns<br>in der Altstadt Luzern.</h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="info-block">
+          <h4>Adresse</h4>
+          <p>Rosemi Beauty Studio GmbH<br>Better Skin Studio<br>Ledergasse 10<br>6004 Luzern</p>
+        </div>
+        <div class="info-block">
+          <h4>Telefon</h4>
+          <p><a href="tel:+41798902661">+41 79 890 26 61</a></p>
+        </div>
+        <div class="info-block">
+          <h4>Öffnungszeiten</h4>
+          <p>Montag bis Freitag &nbsp;·&nbsp; 09.00 – 21.00 Uhr<br>Samstag &nbsp;·&nbsp; 09.00 – 18.00 Uhr</p>
+        </div>
+        <div class="info-block">
+          <h4>Termin</h4>
+          <p><button onclick="openBooking()" style="color: var(--terra); border-bottom: 1px solid var(--terra); padding-bottom: 1px;">Direkt online buchen →</button></p>
+        </div>
+      </div>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=8.3050%2C47.0510%2C8.3120%2C47.0545&amp;layer=mapnik&amp;marker=47.0527%2C8.3085"
+          title="Karte Ledergasse 10, Luzern"
+          loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== BOOKING CTA ====================== -->
+<section class="booking-cta-section">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="color: rgba(245,239,230,0.7);">Termin sichern</div>
+    <h2 class="reveal" data-delay="1">Bereit für einen Moment ganz bei dir?</h2>
+    <p class="reveal" data-delay="2">Ohne Hektik, mit Zeit für deine Fragen. Wir freuen uns auf dich.</p>
+    <button class="btn-primary reveal" data-delay="3" onclick="openBooking()">
+      Termin online buchen
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ====================== FOOTER ====================== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="brand-block">
+        <div class="brand" style="margin-bottom: 18px;">
+          <div class="brand-mark">b</div>
+          <div class="brand-name" style="color: var(--bg);">Better Skin Studio<span>Kosmetikstudio Luzern</span></div>
+        </div>
+        <p>Dein Kokon inmitten der City. Medizinisch-kosmetische und apparative Behandlungen — vegan, achtsam, ganzheitlich.</p>
+      </div>
+      <div>
+        <h5>Studio</h5>
+        <ul>
+          <li><a href="#philosophie">Über uns</a></li>
+          <li><a href="#beratung">Beratung</a></li>
+          <li><a href="#einzel">Einzelbehandlungen</a></li>
+          <li><a href="#kombi">Kombi-Behandlungen</a></li>
+          <li><a href="#instagram">Instagram</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Behandlungen</h5>
+        <ul>
+          <li>HydraFacial®</li>
+          <li>JetPeel™</li>
+          <li>SkinPen® Microneedling</li>
+          <li>Carbon Peeling</li>
+          <li>Kobido Lifting Massage</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Kontakt</h5>
+        <ul>
+          <li>Ledergasse 10</li>
+          <li>6004 Luzern</li>
+          <li><a href="tel:+41798902661">+41 79 890 26 61</a></li>
+        </ul>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/better_skin_luzern/" target="_blank" rel="noopener" aria-label="Instagram @better_skin_luzern">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© Rosemi Beauty Studio GmbH · Better Skin Studio</div>
+      <div class="legal">
+        <a href="#">Datenschutz</a>
+        <a href="#">AGB</a>
+        <a href="#">Impressum</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ====================== TREATMENT MODAL ====================== -->
+<div class="modal-backdrop" id="treatmentModal" onclick="if(event.target===this) closeTreatment()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeTreatment()" aria-label="Schliessen">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-content" id="treatmentModalContent"></div>
+  </div>
+</div>
+
+<!-- ====================== BOOKING WIZARD MODAL ====================== -->
+<div class="modal-backdrop" id="bookingModal" onclick="if(event.target===this) closeBooking()">
+  <div class="modal wizard">
+    <button class="modal-close" onclick="closeBooking()" aria-label="Schliessen">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-content">
+      <div class="eyebrow" style="margin-bottom: 18px;">Online Termin · Vorschau</div>
+
+      <div class="wizard-steps">
+        <div class="step-pill active" data-step="1"><span class="n">1</span><span class="label">Auswahl</span></div>
+        <div class="step-pill" data-step="2"><span class="n">2</span><span class="label">Datum &amp; Zeit</span></div>
+        <div class="step-pill" data-step="3"><span class="n">3</span><span class="label">Kontakt</span></div>
+        <div class="step-pill" data-step="4"><span class="n">✓</span><span class="label">Bestätigung</span></div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="wizard-step active" data-step="1">
+        <h3>Was darf es sein?</h3>
+        <p class="step-sub">Wähle Beratung, Einzel- oder Kombi-Behandlung — die Variante (Basic/Premium/Deluxe) klären wir im Studio.</p>
+        <div class="treatment-options" id="bookingTreatmentList"></div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="wizard-step" data-step="2">
+        <h3>Datum &amp; Uhrzeit</h3>
+        <p class="step-sub">Verfügbare Slots der kommenden Tage. Mo–Fr 9–21 Uhr · Sa 9–18 Uhr.</p>
+        <div class="month-label" id="monthLabel">—</div>
+        <div class="date-picker" id="datePicker"></div>
+        <div style="font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 24px;">Uhrzeit wählen</div>
+        <div class="time-slots" id="timeSlots"></div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="wizard-step" data-step="3">
+        <h3>Deine Kontaktdaten</h3>
+        <p class="step-sub">Wir bestätigen deinen Termin per E-Mail.</p>
+        <div class="field">
+          <label>Vor- und Nachname</label>
+          <input type="text" id="bk-name" placeholder="Maria Muster">
+        </div>
+        <div class="field">
+          <label>E-Mail</label>
+          <input type="email" id="bk-email" placeholder="maria@beispiel.ch">
+        </div>
+        <div class="field">
+          <label>Telefon (optional)</label>
+          <input type="tel" id="bk-phone" placeholder="+41 …">
+        </div>
+        <div class="field">
+          <label>Anmerkungen (optional)</label>
+          <textarea id="bk-note" placeholder="Allergien, besondere Wünsche, Erstbesuch …"></textarea>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="wizard-step" data-step="4">
+        <div class="confirm-screen">
+          <div class="confirm-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Termin reserviert.</h3>
+          <p>Wir freuen uns auf dich.</p>
+
+          <div class="summary-card" style="text-align: left; margin-top: 28px;">
+            <div class="summary-row"><span class="lbl">Auswahl</span><span class="val" id="sum-treatment">—</span></div>
+            <div class="summary-row"><span class="lbl">Datum</span><span class="val" id="sum-date">—</span></div>
+            <div class="summary-row"><span class="lbl">Zeit</span><span class="val" id="sum-time">—</span></div>
+            <div class="summary-row"><span class="lbl">Name</span><span class="val" id="sum-name">—</span></div>
+            <div class="summary-row"><span class="lbl">E-Mail</span><span class="val" id="sum-email">—</span></div>
+          </div>
+
+          <p class="confirm-note">Dies ist eine Design-Vorschau. Keine Daten werden gespeichert oder übertragen.</p>
+        </div>
+      </div>
+
+      <div class="wizard-nav" id="wizardNav">
+        <button class="btn-back" onclick="wizardBack()" id="btnBack" style="visibility: hidden;">← Zurück</button>
+        <button class="btn-next" onclick="wizardNext()" id="btnNext" disabled>Weiter →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sketch banner -->
+<div class="sketch-banner"><span class="pulse"></span> Design-Skizze · Interaktive Vorschau</div>
+
+<script>
+  // ======== Data ========
+  const BERATUNGEN = [
+    {id:'beratung-online', name:'Hautberatung Online', sub:'15 Min · Online-Gespräch', type:'beratung', price:'CHF xx.–',
+      desc:'Kurzes Online-Gespräch zu deinem Hautanliegen. Erste Einordnung, nächste Schritte und Empfehlung, welches Format zu dir passt — bequem von zuhause aus.'},
+    {id:'beratung-30', name:'Hautberatung im Studio', sub:'ca. 30 Min · vor Ort', type:'beratung', price:'CHF xx.–',
+      desc:'Detaillierte Hautanalyse, Besprechung deiner Themen und eine individuell aufgebaute Pflegeroutine für zu Hause — ideal, wenn du dich zuerst orientieren möchtest.'},
+    {id:'beratung-behandlung', name:'Beratung & erste Behandlung', sub:'ca. 1.5 Std · vor Ort', type:'beratung', price:'ab CHF xx.–',
+      desc:'Umfassende Anamnese, Hautanalyse, gemeinsame Zieldefinition, Pflegeempfehlungen und eine auf dich abgestimmte erste Behandlung. Der intensive Einstieg.'}
+  ];
+
+  const TREATMENTS = [
+    {id:'hydra', name:'HydraFacial®', cat:'Reinigung, Klärung & Glow', catKey:'reinigung', price:'ab CHF xx.–',
+      desc:'HydraFacial® verbindet sanfte, apparative Tiefenreinigung mit Peeling und intensiver Durchfeuchtung. Die Behandlung klärt die Poren, verfeinert das Hautbild und sorgt für einen frischen, ebenmässigen Glow — mit sichtbarem Soforteffekt.'},
+    {id:'jetpeel', name:'JetPeel™', cat:'Reinigung, Klärung & Glow', catKey:'reinigung', price:'ab CHF xx.–',
+      desc:'JetPeel™ ist eine nadelfreie Hochdruck-Behandlung, bei der ein feiner Wirkstoffstrahl die Haut tiefenwirksam durchfeuchtet, klärt und vitalisiert. Ideal für einen frischen, aufgepolstert wirkenden Teint.'},
+    {id:'derma', name:'Dermaplaning', cat:'Reinigung, Klärung & Glow', catKey:'reinigung', price:'ab CHF xx.–',
+      desc:'Dermaplaning ist eine sanfte manuelle Technik, bei der feine Härchen und oberflächliche Hautschüppchen mit einer Klinge entfernt werden. Die Haut wirkt glatter, ebenmässiger und nimmt Wirkstoffe besser auf — ideal als Vorbereitung für weitere Behandlungen.'},
+    {id:'carbon', name:'Carbon (Hollywood) Peeling', cat:'Reinigung, Klärung & Glow', catKey:'reinigung', price:'ab CHF xx.–',
+      desc:'Das Carbon (Hollywood) Peeling ist eine sanfte Laserbehandlung mit einer speziellen Kohlenstoffmaske. Sie reinigt die Poren tiefgründig, verfeinert das Hautbild und reduziert Glanz — für klarere, ebenmässiger wirkende Haut mit frischem Glow.'},
+    {id:'skinpen', name:'SkinPen® Microneedling', cat:'Aufbau, Regeneration & Anti-Aging', catKey:'aufbau', price:'ab CHF xx.–',
+      desc:'SkinPen® Microneedling regt mit feinen, kontrollierten Mikrokanälen die Kollagen- und Elastinbildung an. Die Hautstruktur wird glatter und ebenmässiger, Linien und Aknenarben können sichtbar gemindert werden.'},
+    {id:'swich', name:'Circadia SWiCH™', cat:'Aufbau, Regeneration & Anti-Aging', catKey:'aufbau', price:'ab CHF xx.–',
+      desc:'Circadia SWiCH™ ist eine spezielle Anti-Aging-Behandlung, die die körpereigene Zellenergie anregt, ohne die Haut klassisch zu „peelen". Sie unterstützt Regeneration und Straffung von innen heraus — mit minimaler Ausfallzeit und einem langfristig aufgebauten Effekt.'},
+    {id:'peptide', name:'Circadia Firming Peptide', cat:'Aufbau, Regeneration & Anti-Aging', catKey:'aufbau', price:'ab CHF xx.–',
+      desc:'Circadia Firming Peptide ist eine straffende Wirkstoffbehandlung mit Peptiden, die die Hautfestigkeit unterstützt und feine Linien glatter wirken lässt. Ideal, wenn die Haut mehr Spannkraft, Glätte und Pflegekomfort braucht.'},
+    {id:'kobido', name:'Kobido Lifting Massage', cat:'Lifting & Entspannung', catKey:'lifting', price:'ab CHF xx.–',
+      desc:'Die Kobido Lifting Massage ist eine traditionelle japanische Gesichtsmassage mit präzisen, rhythmischen Griffen. Sie strafft und belebt die Gesichtszüge, löst Spannungen und beruhigt gleichzeitig das Nervensystem — für ein entspanntes, geliftet wirkendes Hautbild.'},
+    {id:'fireice', name:'Fire & Ice Facial', cat:'Klassische Behandlungen', catKey:'klassisch', price:'ab CHF xx.–',
+      desc:'Das Fire & Ice Facial von iS CLINICAL kombiniert ein aktivierendes, wärmendes Peeling mit einer kühlenden, beruhigenden Maske. Die Haut wird geglättet, verfeinert und wirkt sofort frischer und ebenmässiger — ideal vor einem besonderen Anlass.'},
+    {id:'champagner', name:'Champagner Foaming', cat:'Klassische Behandlungen', catKey:'klassisch', price:'ab CHF xx.–',
+      desc:'Das Champagner Foaming Facial ist eine prickelnde Schaumbehandlung, die die Haut sanft klärt, mit Sauerstoff versorgt und zum Strahlen bringt. Ideal, wenn der Teint müde wirkt und eine schnelle, erfrischende Glow-Behandlung gefragt ist.'}
+  ];
+
+  const KOMBIS = [
+    {id:'k-hydra-skinpen', a:'HydraFacial®', b:'SkinPen®', price:'ab CHF xx.–',
+      desc:'HydraFacial® bereitet die Haut mit Tiefenreinigung, Peeling und intensiver Durchfeuchtung optimal vor. Anschliessend regt SkinPen® Microneedling die Kollagenbildung an und verbessert gezielt Struktur, Porenbild und Narben — für glattere, klarere und sichtbar erneuerte Haut. Die Kombi vereint Sofort-Glow und langfristigen Strukturaufbau in einer Behandlung.'},
+    {id:'k-hydra-derma', a:'HydraFacial®', b:'Dermaplaning', price:'ab CHF xx.–',
+      desc:'Dermaplaning entfernt zuerst sanft Flaumhaar und abgestorbene Hautschüppchen. Anschliessend klärt und durchfeuchtet HydraFacial® die Haut in der Tiefe. Das Ergebnis: ein besonders glattes, ebenmässiges Hautbild mit intensivem Glow. Ideal, wenn die Haut „camera ready" sein soll und Make-up später noch feiner liegt.'},
+    {id:'k-hydra-jetpeel', a:'HydraFacial®', b:'JetPeel™', price:'ab CHF xx.–',
+      desc:'HydraFacial® sorgt zunächst für porentiefe Reinigung, sanftes Peeling und Hydration. JetPeel™ bringt danach hochwirksame Seren nadelfrei in die Tiefe und vitalisiert die Haut von innen heraus. So verbindet die Kombi gründliche Klärung mit intensivem Wirkstoff-Boost — perfekt, wenn deine Haut maximal durchfeuchtet und prall wirken soll.'},
+    {id:'k-derma-jetpeel', a:'Dermaplaning', b:'JetPeel™', price:'ab CHF xx.–',
+      desc:'Dermaplaning glättet die Hautoberfläche, entfernt sanft Flaumhaar und Schüppchen und macht die Haut besonders aufnahmebereit. Anschliessend bringt JetPeel™ hochwirksame Seren nadelfrei in die Tiefe. Die Kombi sorgt für ein ebenmässiges, geglättetes Hautbild mit intensivem Hydrations- und Frischekick.'},
+    {id:'k-jetpeel-skinpen', a:'JetPeel™', b:'SkinPen®', price:'ab CHF xx.–',
+      desc:'JetPeel™ bereitet die Haut mit nadelfreier Tiefenreinigung und intensiver Durchfeuchtung optimal vor. Anschliessend setzt SkinPen® Microneedling kontrollierte Mikrokanäle, regt die Kollagenbildung an und verbessert Struktur, Porenbild und Narben. Die Kombi verbindet tiefenwirksame Hydration mit gezieltem Strukturaufbau — für prallere, glattere und sichtbar erneuerte Haut.'},
+    {id:'k-jetpeel-carbon', a:'JetPeel™', b:'Carbon Laser', price:'ab CHF xx.–',
+      desc:'Carbon (Hollywood) Peeling reinigt zuerst die Poren tiefgründig, verfeinert das Hautbild und reduziert Glanz. Im Anschluss versorgt JetPeel™ die geklärte Haut nadelfrei mit intensiv hydratisierenden Wirkstoffen. Die Kombi sorgt für klarere, ebenmässigere und gleichzeitig prall durchfeuchtete Haut mit frischem Glow.'}
+  ];
+
+  // ======== Render Einzel-Treatments grid ========
+  const grid = document.getElementById('treatmentsGrid');
+  TREATMENTS.forEach((t, i) => {
+    const el = document.createElement('div');
+    el.className = 'treatment';
+    el.setAttribute('data-cat', t.catKey);
+    el.setAttribute('data-idx', String(i + 1).padStart(2, '0'));
+    el.innerHTML = `
+      <div class="badge">${t.cat}</div>
+      <h4>${t.name}</h4>
+      <p>${t.desc.substring(0, 130)}…</p>
+      <div class="row">
+        <span class="price"><small>Basic</small>${t.price}</span>
+        <span class="more">Mehr <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    `;
+    el.addEventListener('click', () => openTreatment(t));
+    grid.appendChild(el);
+  });
+
+  // CTA-Tile am Ende des Treatments-Grid (füllt die 2 leeren Zellen der letzten Reihe)
+  const ctaTile = document.createElement('div');
+  ctaTile.className = 'cta-tile';
+  ctaTile.innerHTML = `
+    <div class="eyebrow">Unsicher welche Behandlung?</div>
+    <h4>Wir finden gemeinsam die richtige Methode für deine Haut.</h4>
+    <p>In einer 30-minütigen Hautanalyse besprechen wir Ziele, Bedarf und Routine — und empfehlen dir, was wirklich passt.</p>
+    <button class="cta-btn">
+      Beratung buchen
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
+  `;
+  ctaTile.addEventListener('click', () => openBooking('beratung-30'));
+  grid.appendChild(ctaTile);
+
+  // ======== Render Kombi grid ========
+  const kgrid = document.getElementById('kombiGrid');
+  KOMBIS.forEach((k, i) => {
+    const el = document.createElement('div');
+    el.className = 'kombi-card';
+    el.innerHTML = `
+      <div class="pair">${k.a} <span class="x">×</span> ${k.b}</div>
+      <h4>${k.a} &amp; ${k.b}</h4>
+      <p>${k.desc.substring(0, 180)}…</p>
+      <div class="row">
+        <span class="price"><small>Basic</small>${k.price}</span>
+        <span class="more">Mehr <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+      </div>
+    `;
+    el.addEventListener('click', () => openKombi(k));
+    kgrid.appendChild(el);
+  });
+
+  // ======== Modals ========
+  function openTreatment(t) {
+    const c = document.getElementById('treatmentModalContent');
+    c.innerHTML = `
+      <span class="badge">${t.cat}</span>
+      <h3>${t.name}</h3>
+      <div class="modal-price"><small>Basic</small>${t.price}</div>
+      <p>${t.desc}</p>
+      <p style="font-size: 0.85rem; color: var(--muted); font-style: italic;">Buchbar in den Varianten Basic, Premium und Deluxe — Inhalte und Preise im Buchungstool.</p>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="closeTreatment(); setTimeout(()=>{openBooking('${t.id}')}, 200);">
+          Diese Behandlung buchen
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn-ghost" onclick="closeTreatment()">Schliessen</button>
+      </div>
+    `;
+    document.getElementById('treatmentModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function openKombi(k) {
+    const c = document.getElementById('treatmentModalContent');
+    c.innerHTML = `
+      <span class="badge">Kombi-Behandlung · ${k.a} &amp; ${k.b}</span>
+      <h3>${k.a} &amp; ${k.b}</h3>
+      <div class="modal-price"><small>Basic</small>${k.price}</div>
+      <p>${k.desc}</p>
+      <p style="font-size: 0.85rem; color: var(--muted); font-style: italic;">Buchbar in den Varianten Basic, Premium und Deluxe — Inhalte und Preise im Buchungstool.</p>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="closeTreatment(); setTimeout(()=>{openBooking('${k.id}')}, 200);">
+          Diese Kombi buchen
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn-ghost" onclick="closeTreatment()">Schliessen</button>
+      </div>
+    `;
+    document.getElementById('treatmentModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeTreatment() {
+    document.getElementById('treatmentModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // ======== Booking Wizard ========
+  const booking = {
+    step: 1,
+    selection: null,  // {type, id, name, sub, price}
+    date: null,
+    time: null,
+    name: '', email: '', phone: '', note: ''
+  };
+
+  function openBooking(preselectId) {
+    booking.step = 1;
+    booking.selection = null;
+    booking.date = null;
+    booking.time = null;
+    renderBookingList();
+    if (preselectId) {
+      const found = findById(preselectId);
+      if (found) selectItem(found);
+    }
+    renderDatePicker();
+    showStep(1);
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeBooking() {
+    document.getElementById('bookingModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function findById(id) {
+    const b = BERATUNGEN.find(x => x.id === id);
+    if (b) return {type:'beratung', id:b.id, name:b.name, sub:b.sub, price:b.price};
+    const t = TREATMENTS.find(x => x.id === id);
+    if (t) return {type:'einzel', id:t.id, name:t.name, sub:t.cat, price:t.price};
+    const k = KOMBIS.find(x => x.id === id);
+    if (k) return {type:'kombi', id:k.id, name:`${k.a} & ${k.b}`, sub:'Kombi-Behandlung', price:k.price};
+    return null;
+  }
+
+  function renderBookingList() {
+    const list = document.getElementById('bookingTreatmentList');
+    list.innerHTML = '';
+
+    const groups = [
+      {label:'Unverbindliche Hautberatung', items: BERATUNGEN.map(b => ({type:'beratung', id:b.id, name:b.name, sub:b.sub, price:b.price}))},
+      {label:'Einzelbehandlungen', items: TREATMENTS.map(t => ({type:'einzel', id:t.id, name:t.name, sub:t.cat, price:t.price}))},
+      {label:'Kombi-Behandlungen', items: KOMBIS.map(k => ({type:'kombi', id:k.id, name:`${k.a} & ${k.b}`, sub:'Kombi-Behandlung', price:k.price}))}
+    ];
+
+    groups.forEach(g => {
+      const lbl = document.createElement('div');
+      lbl.className = 'opt-group-label';
+      lbl.textContent = g.label;
+      list.appendChild(lbl);
+      g.items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'opt' + (booking.selection?.id === item.id ? ' selected' : '');
+        el.innerHTML = `
+          <div class="opt-radio"></div>
+          <div class="opt-body">
+            <div class="opt-name">${item.name}</div>
+            <div class="opt-cat">${item.sub}</div>
+          </div>
+          <div class="opt-price">${item.price}</div>
+        `;
+        el.addEventListener('click', () => selectItem(item));
+        list.appendChild(el);
+      });
+    });
+  }
+  function selectItem(item) {
+    booking.selection = item;
+    renderBookingList();
+    updateNav();
+  }
+
+  function renderDatePicker() {
+    const picker = document.getElementById('datePicker');
+    picker.innerHTML = '';
+    const today = new Date();
+    const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    const dows = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+    let label = '';
+    for (let i = 1; i <= 14; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      const dow = (d.getDay() + 6) % 7;
+      const isSunday = dow === 6;
+      const cell = document.createElement('div');
+      cell.className = 'day-cell' + (isSunday ? ' disabled' : '');
+      cell.innerHTML = `<span class="dow">${dows[dow]}</span><span class="dn">${d.getDate()}</span>`;
+      if (!isSunday) {
+        cell.addEventListener('click', () => {
+          booking.date = d;
+          booking.time = null;
+          renderDatePicker();
+          renderTimeSlots(dow);
+          updateNav();
+        });
+      }
+      if (booking.date && booking.date.toDateString() === d.toDateString()) {
+        cell.classList.add('selected');
+      }
+      if (i === 1 || d.getDate() === 1) {
+        label = `${months[d.getMonth()]} ${d.getFullYear()}`;
+      }
+      picker.appendChild(cell);
+    }
+    document.getElementById('monthLabel').textContent = label || `${months[today.getMonth()]} ${today.getFullYear()}`;
+    if (booking.date) {
+      const dow = (booking.date.getDay() + 6) % 7;
+      renderTimeSlots(dow);
+    } else {
+      document.getElementById('timeSlots').innerHTML = '<div style="grid-column: 1/-1; color: var(--muted); font-size: 0.85rem; padding: 12px 0;">Bitte zuerst ein Datum wählen.</div>';
+    }
+  }
+  function renderTimeSlots(dow) {
+    const slots = document.getElementById('timeSlots');
+    slots.innerHTML = '';
+    const isSat = dow === 5;
+    const endHour = isSat ? 18 : 21;
+    const booked = new Set(['10:30','14:00','16:30']);
+    for (let h = 9; h < endHour; h++) {
+      ['00','30'].forEach(m => {
+        const time = `${String(h).padStart(2,'0')}:${m}`;
+        const el = document.createElement('div');
+        const isBooked = booked.has(time);
+        el.className = 'slot' + (isBooked ? ' disabled' : '') + (booking.time === time ? ' selected' : '');
+        el.textContent = time;
+        if (!isBooked) {
+          el.addEventListener('click', () => {
+            booking.time = time;
+            renderTimeSlots(dow);
+            updateNav();
+          });
+        }
+        slots.appendChild(el);
+      });
+    }
+  }
+
+  function showStep(n) {
+    booking.step = n;
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.wizard-step[data-step="${n}"]`).classList.add('active');
+    document.querySelectorAll('.step-pill').forEach(p => {
+      const pn = +p.dataset.step;
+      p.classList.toggle('active', pn === n);
+      p.classList.toggle('done', pn < n);
+    });
+    document.getElementById('btnBack').style.visibility = (n === 1 || n === 4) ? 'hidden' : 'visible';
+    const next = document.getElementById('btnNext');
+    if (n === 3) next.textContent = 'Termin bestätigen →';
+    else if (n === 4) next.textContent = 'Fertig';
+    else next.textContent = 'Weiter →';
+    if (n === 4) {
+      next.style.visibility = 'hidden';
+      document.getElementById('btnBack').style.visibility = 'hidden';
+    } else {
+      next.style.visibility = 'visible';
+    }
+    updateNav();
+  }
+  function updateNav() {
+    const next = document.getElementById('btnNext');
+    let valid = false;
+    if (booking.step === 1) valid = !!booking.selection;
+    if (booking.step === 2) valid = !!booking.date && !!booking.time;
+    if (booking.step === 3) {
+      const name = document.getElementById('bk-name').value.trim();
+      const email = document.getElementById('bk-email').value.trim();
+      valid = name.length > 1 && /\S+@\S+\.\S+/.test(email);
+    }
+    next.disabled = !valid;
+  }
+  function wizardBack() {
+    if (booking.step > 1) showStep(booking.step - 1);
+  }
+  function wizardNext() {
+    if (booking.step === 3) {
+      booking.name = document.getElementById('bk-name').value.trim();
+      booking.email = document.getElementById('bk-email').value.trim();
+      booking.phone = document.getElementById('bk-phone').value.trim();
+      booking.note = document.getElementById('bk-note').value.trim();
+      const dateStr = booking.date.toLocaleDateString('de-CH', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+      document.getElementById('sum-treatment').textContent = booking.selection.name;
+      document.getElementById('sum-date').textContent = dateStr;
+      document.getElementById('sum-time').textContent = booking.time + ' Uhr';
+      document.getElementById('sum-name').textContent = booking.name;
+      document.getElementById('sum-email').textContent = booking.email;
+      showStep(4);
+      return;
+    }
+    if (booking.step < 4) showStep(booking.step + 1);
+  }
+
+  ['bk-name','bk-email','bk-phone','bk-note'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateNav);
+  });
+
+  function scrollToTreatments() {
+    document.getElementById('einzel-grid').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  const navEl = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 24) navEl.classList.add('scrolled');
+    else navEl.classList.remove('scrolled');
+  });
+
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('menu').classList.toggle('open');
+  });
+  document.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => {
+    document.getElementById('menu').classList.remove('open');
+  }));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeTreatment();
+      closeBooking();
+    }
+  });
+
+  // ========================================================
+  // ============ MODERN: Reveal + Tilt + Counter ===========
+  // ========================================================
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- Scroll reveal via IntersectionObserver ---
+  function observeReveals() {
+    const els = document.querySelectorAll('.reveal:not(.in), .reveal-img:not(.in)');
+    if (!('IntersectionObserver' in window) || prefersReducedMotion) {
+      els.forEach(el => el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          // small stagger to ensure transitions register
+          requestAnimationFrame(() => e.target.classList.add('in'));
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => io.observe(el));
+  }
+  // Defer two frames so initial styles paint before .in is added — guarantees transitions run
+  requestAnimationFrame(() => requestAnimationFrame(observeReveals));
+  // Re-observe after Treatments/Kombis were injected dynamically
+  setTimeout(observeReveals, 250);
+
+  // --- Hero-meta counter animation + bar underline ---
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const cell = e.target;
+      cell.classList.add('in'); // triggers underline animation
+      const numEl = cell.querySelector('.num');
+      if (!numEl) { countObserver.unobserve(cell); return; }
+      const targets = numEl.querySelectorAll('[data-count]').length
+        ? numEl.querySelectorAll('[data-count]')
+        : (numEl.dataset.count ? [numEl] : []);
+      targets.forEach(el => {
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || '';
+        if (prefersReducedMotion) { el.textContent = target + suffix; return; }
+        const duration = 1400;
+        const start = performance.now();
+        function tick(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          const val = Math.round(target * eased);
+          el.textContent = val + (t === 1 ? suffix : suffix);
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+      countObserver.unobserve(cell);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.hero-meta-cell').forEach(c => countObserver.observe(c));
+
+  // --- 3D tilt on hover (subtle) ---
+  function attachTilt(selector, maxDeg = 4, liftPx = 6) {
+    document.querySelectorAll(selector).forEach(card => {
+      let raf = null;
+      function onMove(e) {
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = `perspective(900px) rotateX(${-y * maxDeg}deg) rotateY(${x * maxDeg}deg) translateY(-${liftPx}px)`;
+        });
+      }
+      function onLeave() {
+        if (raf) cancelAnimationFrame(raf);
+        card.style.transform = '';
+      }
+      card.addEventListener('mousemove', onMove);
+      card.addEventListener('mouseleave', onLeave);
+    });
+  }
+  if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
+    attachTilt('.cat', 4, 6);
+    attachTilt('.ber-card', 3, 6);
+    setTimeout(() => {
+      attachTilt('.treatment', 2, 4);
+      attachTilt('.kombi-card', 2, 4);
+    }, 120);
+  }
+
+  // --- Light parallax on philosophy image (slow drift) ---
+  if (!prefersReducedMotion) {
+    const parallaxEls = document.querySelectorAll('[data-parallax]');
+    function onScroll() {
+      parallaxEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        if (r.bottom < 0 || r.top > vh) return;
+        const progress = (vh - r.top) / (vh + r.height); // 0..1
+        const offset = (progress - 0.5) * 30; // ±15px
+        el.style.transform = `translateY(${offset}px)`;
+      });
+    }
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { onScroll(); ticking = false; });
+    }, { passive: true });
+    onScroll();
+  }
+</script>
+
+</body>
+</html>
