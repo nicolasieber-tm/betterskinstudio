@@ -198,6 +198,26 @@
   }
   .btn-ghost:hover { background: var(--ink); color: var(--bg); }
 
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245,239,230,0.08);
+    border: 1px solid rgba(245,239,230,0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    color: var(--bg);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-badge .badge-amount {
+    font-family: var(--serif);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.9rem;
+    color: var(--champagne);
+  }
+
   .hero-tag {
     display: inline-flex; align-items:center; gap: 12px;
     background: rgba(245,239,230,0.12);
@@ -1227,6 +1247,7 @@
 
   <div class="hero-content">
     <div class="hero-copy">
+      <div class="hero-badge reveal"><span class="badge-amount">CHF 25.−</span> Willkommensgutschein</div>
       <div class="eyebrow reveal">Kosmetikstudio Luzern · medizinisch-vegan</div>
       <h1 class="reveal" data-delay="1">Dein <em>Kokon</em><br>inmitten der City.</h1>
       <p class="lead reveal" data-delay="2">Während Luzern draussen pulsiert, fokussieren wir uns hier ganz auf deine Haut. Hochwertige apparative und medizinisch-kosmetische Behandlungen — verbunden mit einer achtsamen, ganzheitlichen Sicht auf dein Wohlbefinden.</p>
